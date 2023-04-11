@@ -17,7 +17,7 @@ function Level:init(lvl)
     self.xRenderOffset = (SCREEN_TILE_WIDTH - self.levelWidth) / 2 * TILE_SIZE
     self.yRenderOffset = (SCREEN_TILE_HEIGHT - self.levelHeight) / 2 * TILE_SIZE
 
-    self.player = Player(self.xPlayerStart, self.yPlayerStart)
+    self.player = Player(self)
 
 end
 
@@ -50,7 +50,6 @@ function Level:generateMap()
     for y = 1, self.levelHeight do
         table.insert(self.tiles, {})
         for x = 1, self.levelWidth do
-
             -- add walls and ground tiles
             if self.levelLayout[y][x] == 1 then
                 tileID = WALLS[1]
@@ -70,11 +69,15 @@ function Level:generateMap()
                 tileID = DOTS[1]
                 table.insert(self.dots, Dot(x, y, tileID))
 
-            -- locate the player starting position
+                -- locate the player starting position
             elseif self.levelLayout[y][x] == 5 then
                 self.xPlayerStart = x
                 self.yPlayerStart = y
             end
         end
     end
+end
+
+function Level:isWall(x, y)
+    return self.tiles[y][x].id == WALLS[1]
 end
