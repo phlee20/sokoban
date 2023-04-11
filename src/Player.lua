@@ -13,10 +13,25 @@ function Player:init(x, y)
 end
 
 function Player:update(dt)
+    local toX = self.gridX
+    local toY = self.gridY
+
     if love.keyboard.wasPressed('up') then
-        self.gridY = self.gridY - 1
-        self.y = (self.gridY - 1) * TILE_SIZE
+        toY = toY - 1
+        self.y = (toY - 1) * TILE_SIZE
+    elseif love.keyboard.wasPressed('down') then
+        toY = toY + 1
+        self.y = (toY + 1) * TILE_SIZE
+    elseif love.keyboard.wasPressed('left') then
+        toX = toX - 1
+        self.x = (toX - 1) * TILE_SIZE
+    elseif love.keyboard.wasPressed('right') then
+        toX = toX + 1
+        self.x = (toX + 1) * TILE_SIZE
     end
+
+    self.gridX = toX
+    self.gridY = toY
 end
 
 function Player:render(x, y)
