@@ -29,7 +29,7 @@ gTextures = {
 
 gFrames = {
     ['tilesheet'] = GenerateQuads(gTextures['tilesheet'], TILE_SIZE, TILE_SIZE),
-    ['retina'] = GenerateQuads(gTextures['retina'], TILE_SIZE, TILE_SIZE)
+    ['retina'] = GenerateQuads(gTextures['retina'], TILE_SIZE * 2, TILE_SIZE * 2)
 }
 
 gFonts = {

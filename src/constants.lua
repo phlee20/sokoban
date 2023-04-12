@@ -18,7 +18,7 @@ WALLS = {
 }
 
 GROUND = {
-    90
+    90, 89
 }
 
 BOXES = {
