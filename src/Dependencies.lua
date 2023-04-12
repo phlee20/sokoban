@@ -23,11 +23,13 @@ require 'src/states/PlayState'
 
 
 gTextures = {
-    ['tilesheet'] = love.graphics.newImage('graphics/sokoban_tilesheet.png')
+    ['tilesheet'] = love.graphics.newImage('graphics/sokoban_tilesheet.png'),
+    ['retina'] = love.graphics.newImage('graphics/sokoban_tilesheet_retina.png')
 }
 
 gFrames = {
-    ['tilesheet'] = GenerateQuads(gTextures['tilesheet'], TILE_SIZE, TILE_SIZE)
+    ['tilesheet'] = GenerateQuads(gTextures['tilesheet'], TILE_SIZE, TILE_SIZE),
+    ['retina'] = GenerateQuads(gTextures['retina'], TILE_SIZE, TILE_SIZE)
 }
 
 gFonts = {
