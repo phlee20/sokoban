@@ -17,13 +17,10 @@ function Level:init(lvl)
     self.xRenderOffset = (SCREEN_TILE_WIDTH - self.levelWidth) / 2 * TILE_SIZE
     self.yRenderOffset = (SCREEN_TILE_HEIGHT - self.levelHeight) / 2 * TILE_SIZE
 
-    self.player = Player(self)
-
 end
 
 function Level:update(dt)
-    self.player:update(dt)
-    
+
 end
 
 function Level:render()
@@ -33,15 +30,13 @@ function Level:render()
         end
     end
 
-    for k, v in ipairs(self.boxes) do
-        v:render(self.xRenderOffset, self.yRenderOffset)
-    end
-
     for k, v in ipairs(self.dots) do
         v:render(self.xRenderOffset, self.yRenderOffset)
     end
 
-    self.player:render(self.xRenderOffset, self.yRenderOffset)
+    for k, v in ipairs(self.boxes) do
+        v:render(self.xRenderOffset, self.yRenderOffset)
+    end
 end
 
 function Level:generateMap()
@@ -62,15 +57,18 @@ function Level:generateMap()
             table.insert(self.tiles[y], Tile(x, y, tileID))
 
             -- add boxes and dots
-            if self.levelLayout[y][x] == 3 then
+            if self.levelLayout[y][x] == 3 or self.levelLayout[y][x] == 6 then
                 tileID = BOXES[1]
                 table.insert(self.boxes, Box(x, y, tileID))
-            elseif self.levelLayout[y][x] == 4 then
+            end
+
+            if self.levelLayout[y][x] == 4 or self.levelLayout[y][x] == 6 then
                 tileID = DOTS[1]
                 table.insert(self.dots, Dot(x, y, tileID))
+            end
 
                 -- locate the player starting position
-            elseif self.levelLayout[y][x] == 5 then
+            if self.levelLayout[y][x] == 5 then
                 self.xPlayerStart = x
                 self.yPlayerStart = y
             end
@@ -80,4 +78,23 @@ end
 
 function Level:isWall(x, y)
     return self.tiles[y][x].id == WALLS[1]
+end
+
+function Level:isSolved()
+    local numDots = 0
+
+    for _, box in ipairs(self.boxes) do
+        for _, dot in ipairs(self.dots) do
+            -- checks if boxes are on dots
+            if dot.gridX == box.gridX and dot.gridY == box.gridY then
+                numDots = numDots + 1
+                box.onDot = true
+                break
+            else
+                box.onDot = false
+            end
+        end
+    end
+
+    return numDots == #self.dots
 end

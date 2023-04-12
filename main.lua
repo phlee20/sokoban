@@ -15,7 +15,7 @@ function love.load()
     })
 
     gStateStack = StateStack()
-    gStateStack:push(PlayState())
+    gStateStack:push(TitleState())
 
     love.mouse.buttonsPressed = {}
     love.mouse.buttonsReleased = {}
