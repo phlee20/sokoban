@@ -15,11 +15,17 @@ require 'src/Player'
 require 'src/level_def'
 require 'src/player_def'
 
+require 'src/editor/Grid'
+require 'src/editor/Button'
+require 'src/editor/TileMenu'
+
 require 'src/StateMachine'
 require 'src/states/BaseState'
 require 'src/states/StateStack'
 require 'src/states/TitleState'
 require 'src/states/PlayState'
+require 'src/states/LevelSelectState'
+require 'src/states/EditorState'
 
 
 gTextures = {
