@@ -45,5 +45,6 @@ gFonts = {
 }
 
 gSounds = {
-
+    ['select'] = love.audio.newSource('sounds/Button-Down.mp3', 'static'),
+    ['clear'] = love.audio.newSource('sounds/Button-Up.mp3', 'static')
 }

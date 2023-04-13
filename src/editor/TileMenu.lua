@@ -1,21 +1,27 @@
 TileMenu = Class {}
 
-function TileMenu:init()
+function TileMenu:init(x, y)
     -- Base tiles: wall, ground
     -- Stack tiles: player, dot, box
     -- Rules - no tiles on walls
     -- player and box can stack on dot but not on each other
-    
+
     -- left click to select a tile and place a tile
     -- right click to deselect or remove a tile
     -- drag?
-    
-    self.x = TILE_SIZE
-    self.y = VIRTUAL_HEIGHT / 2 - TILE_SIZE * 9 / 2
+
+    self.x = x
+    self.y = y
     self.width = TILE_SIZE
     self.height = TILE_SIZE * 9
 
     self.buttons = self:generateButtons()
+
+    self.highlightedButton = nil
+end
+
+function TileMenu:update(dt)
+    
 end
 
 function TileMenu:render()
@@ -36,4 +42,17 @@ function TileMenu:generateButtons()
     end
 
     return buttons
+end
+
+function TileMenu:clicked(button)
+    self.buttons[button]:toggle()
+
+    if self.highlightedButton == nil then
+        self.highlightedButton = button
+    elseif button == self.highlightedButton then
+        self.highlightedButton = nil
+    else 
+        self.buttons[self.highlightedButton]:toggle()
+        self.highlightedButton = button
+    end
 end
