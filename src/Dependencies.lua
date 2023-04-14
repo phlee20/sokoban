@@ -18,6 +18,7 @@ require 'src/player_def'
 require 'src/editor/Grid'
 require 'src/editor/Button'
 require 'src/editor/TileMenu'
+require 'src/editor/Map'
 
 require 'src/StateMachine'
 require 'src/states/BaseState'

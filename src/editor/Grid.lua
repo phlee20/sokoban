@@ -3,6 +3,11 @@ Grid = Class {}
 function Grid:init(x, y)
     self.gridX = x
     self.gridY = y
+
+    self.x = 0
+    self.y = 0
+    self.width = x * TILE_SIZE
+    self.height = y * TILE_SIZE
 end
 
 function Grid:update(dt)
