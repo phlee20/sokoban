@@ -51,7 +51,7 @@ function TileMenu:clicked(button)
         self.highlightedButton = button
     elseif button == self.highlightedButton then
         self.highlightedButton = nil
-    else 
+    else
         self.buttons[self.highlightedButton]:toggle()
         self.highlightedButton = button
     end

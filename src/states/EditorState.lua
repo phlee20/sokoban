@@ -32,10 +32,12 @@ function EditorState:update(dt)
         end
     end
 
-    if self.tileMenu.highlightedButton ~= nil then
+    local selection = self.tileMenu.highlightedButton
+
+    if selection ~= nil then
         if love.mouse.wasPressed(1) and self.map:mouseOverGrid(x - self.gridPosX, y - self.gridPosY) then
             local tileX, tileY = self.map:pointToTile(x - self.gridPosX, y - self.gridPosY)
-            self.map:editTile(tileX, tileY)
+            self.map:editTile(tileX, tileY, self.tileMenu.buttons[selection].id)
         end
     end
 

@@ -5,6 +5,10 @@ function Map:init(x, y)
 
     self.tiles = {}
     self:resetMap()
+
+    self.boxes = {}
+    self.dots = {}
+    self.player = nil
 end
 
 function Map:update(dt)
@@ -16,6 +20,10 @@ function Map:render(xOffset, yOffset)
         for y = 1, self.gridX do
             self.tiles[x][y]:render(xOffset, yOffset)
         end
+    end
+
+    for k, v in ipairs(self.boxes) do
+        v:render(xOffset, yOffset)
     end
 end
 
@@ -41,6 +49,28 @@ function Map:pointToTile(mouseX, mouseY)
     return tileX, tileY
 end
 
-function Map:editTile(x, y)
-    self.tiles[y][x].id = WALLS[1]
+function Map:editTile(x, y, highlightedButton)
+    if self.tiles[y][x].id == BLANK[1] then
+        if highlightedButton == WALLS[1] or highlightedButton == GROUND[1] then
+            self.tiles[y][x].id = highlightedButton
+        end
+    elseif self.tiles[y][x].id == GROUND[1] then
+        if highlightedButton == BOXES[1] then
+            if self:tileExists(x, y, highlightedButton) then
+                table.insert(self.boxes, Box(x, y, BOXES[1]))
+            end
+        end
+    end
+end
+
+function Map:tileExists(x, y, type)
+    -- nothing can be on top of a box
+    for k, v in ipairs(self.boxes) do
+        if v.gridX == x and v.gridY == y then
+            return false
+        end
+    end
+
+    
+    return true
 end
