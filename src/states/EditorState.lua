@@ -10,11 +10,16 @@ function EditorState:init()
 
     -- tile menu
     self.tileMenuPosX = TILE_SIZE
-    self.tileMenuPosY = VIRTUAL_HEIGHT / 2 - TILE_SIZE * 9 / 2
+    self.tileMenuPosY = VIRTUAL_HEIGHT / 2 - TILE_SIZE * 7 / 2
     self.tileMenu = TileMenu(self.tileMenuPosX, self.tileMenuPosY)
 
     -- tile map
     self.map = Map(self.gridWidth, self.gridHeight)
+
+    -- file menu
+    self.fileMenuPosX = VIRTUAL_WIDTH - TILE_SIZE * 3
+    self.fileMenuPosY = TILE_SIZE
+    self.fileMenu = FileMenu(self.fileMenuPosX, self.fileMenuPosY)
 
     -- mouse states to keep track
     self.tileSelected = false
@@ -33,11 +38,16 @@ function EditorState:update(dt)
     end
 
     local selection = self.tileMenu.highlightedButton
+   
+    if love.mouse.wasPressed(1) and self.map:mouseOverGrid(x - self.gridPosX, y - self.gridPosY) then
+        local tileX, tileY = self.map:pointToTile(x - self.gridPosX, y - self.gridPosY)
 
-    if selection ~= nil then
-        if love.mouse.wasPressed(1) and self.map:mouseOverGrid(x - self.gridPosX, y - self.gridPosY) then
-            local tileX, tileY = self.map:pointToTile(x - self.gridPosX, y - self.gridPosY)
-            self.map:editTile(tileX, tileY, self.tileMenu.buttons[selection].id)
+        if selection == 6 then
+            self.map:eraseTile(tileX, tileY)
+            gSounds['clear']:play()
+        elseif selection ~= nil then
+            self.map:addTile(tileX, tileY, self.tileMenu.buttons[selection].id)
+            gSounds['select']:play()
         end
     end
 
@@ -47,5 +57,6 @@ end
 function EditorState:render()
     self.grid:render(self.gridPosX, self.gridPosY)
     self.tileMenu:render()
+    self.fileMenu:render()
     self.map:render(self.gridPosX, self.gridPosY)
 end

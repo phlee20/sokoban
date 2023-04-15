@@ -27,11 +27,3 @@ end
 function Box:exists(x, y)
     return self.gridX == x and self.gridY == y
 end
-
-function Box:move(x, y)
-    self.gridX = x
-    self.gridY = y
-
-    self.x = (self.gridX - 1) * TILE_SIZE
-    self.y = (self.gridY - 1) * TILE_SIZE
-end

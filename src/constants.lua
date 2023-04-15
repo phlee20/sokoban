@@ -28,3 +28,5 @@ BOXES = {
 DOTS = {
     26
 }
+
+ERASER = 12

@@ -18,3 +18,11 @@ function Tile:render(x, y)
     love.graphics.draw(gTextures['tilesheet'], gFrames['tilesheet'][self.id], self.x + x, self.y + y,
         0, self.scale, self.scale)
 end
+
+function Tile:move(x, y)
+    self.gridX = x
+    self.gridY = y
+
+    self.x = (self.gridX - 1) * TILE_SIZE
+    self.y = (self.gridY - 1) * TILE_SIZE
+end
