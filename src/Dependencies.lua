@@ -1,8 +1,10 @@
 Class = require 'lib/class'
 push = require 'lib/push'
+lume = require 'lib/lume'
 
 Timer = require 'lib/knife.timer'
 Event = require 'lib/knife.event'
+
 
 require 'src/Util'
 require 'src/constants'

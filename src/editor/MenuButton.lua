@@ -15,3 +15,11 @@ function MenuButton:render(x, y)
 
     love.graphics.print(self.text, self.x + x, self.y + y)
 end
+
+function MenuButton:mouseOver(mouseX, mouseY)
+    if mouseX > self.x and mouseX < self.x + self.width and mouseY > self.y and mouseY < self.y + self.height then
+        return true
+    end
+
+    return false
+end

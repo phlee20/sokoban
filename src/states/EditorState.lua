@@ -35,23 +35,30 @@ function EditorState:update(dt)
                 self.tileMenu:clicked(k)
             end
         end
-    end
 
-    local selection = self.tileMenu.highlightedButton
-   
-    if love.mouse.wasPressed(1) and self.map:mouseOverGrid(x - self.gridPosX, y - self.gridPosY) then
-        local tileX, tileY = self.map:pointToTile(x - self.gridPosX, y - self.gridPosY)
+        if self.map:mouseOverGrid(x - self.gridPosX, y - self.gridPosY) then
+            local tileX, tileY = self.map:pointToTile(x - self.gridPosX, y - self.gridPosY)
+            local selection = self.tileMenu.highlightedButton
 
-        if selection == 6 then
-            self.map:eraseTile(tileX, tileY)
-            gSounds['clear']:play()
-        elseif selection ~= nil then
-            self.map:addTile(tileX, tileY, self.tileMenu.buttons[selection].id)
-            gSounds['select']:play()
+            if selection == 6 then
+                self.map:eraseTile(tileX, tileY)
+                gSounds['clear']:play()
+            elseif selection ~= nil then
+                self.map:addTile(tileX, tileY, self.tileMenu.buttons[selection].id)
+                gSounds['select']:play()
+            end
+
+            self.map:boxOnDot()
         end
+
+        for k, button in pairs(self.fileMenu.buttons) do
+            if button:mouseOver(x - self.fileMenuPosX, y - self.fileMenuPosY) then
+                gSounds['select']:play()
+                button.onClick()
+            end
+        end
+
     end
-
-
 end
 
 function EditorState:render()
