@@ -1,9 +1,9 @@
 EditorState = Class { __includes = BaseState }
 
-function EditorState:init()
+function EditorState:init(width, height)
     -- grid
-    self.gridWidth = 4
-    self.gridHeight = 5
+    self.gridWidth = width
+    self.gridHeight = height
     self.gridPosX = VIRTUAL_WIDTH / 2 - self.gridWidth / 2 * TILE_SIZE
     self.gridPosY = VIRTUAL_HEIGHT / 2 - self.gridHeight / 2 * TILE_SIZE
     self.grid = Grid(self.gridWidth, self.gridHeight)
@@ -27,6 +27,14 @@ end
 
 function EditorState:update(dt)
     local x, y = push:toGame(love.mouse.getPosition())
+
+    for k, button in pairs(self.fileMenu.buttons) do
+        if button:mouseOver(x - self.fileMenuPosX, y - self.fileMenuPosY) then
+            button.highlighted = true
+        else
+            button.highlighted = false
+        end
+    end
 
     if love.mouse.wasPressed(1) then
         for k, button in ipairs(self.tileMenu.buttons) do

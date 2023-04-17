@@ -4,14 +4,27 @@ function TitleState:init()
     self.height = math.floor(SCREEN_TILE_HEIGHT / 2 + 1)
     self.width = math.floor(SCREEN_TILE_WIDTH / 2)
     self.background = self:drawBackground()
+    
+    -- Menu buttons
+    self.playButton = MenuButton(0, 0, 'Play')
+    self.editButton = MenuButton(0, 0, 'Edit')
 
+    self.playButton:toggle()
 end
 
 function TitleState:update(dt)
+    if love.keyboard.wasPressed('right') or love.keyboard.wasPressed('left') then
+        self.playButton:toggle()
+        self.editButton:toggle()
+    end
+
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         gStateStack:pop()
-        gStateStack:push(EditorState())
-        -- gStateStack:push(PlayState(1))
+        if self.playButton.highlighted then
+            gStateStack:push(LevelSelectState())
+        else
+            gStateStack:push(GridSelectState())
+        end
     end
 end
 
@@ -29,7 +42,10 @@ function TitleState:render()
     love.graphics.printf('S O K O B A N', 0, VIRTUAL_HEIGHT / 3, VIRTUAL_WIDTH, 'center')
 
     love.graphics.setFont(gFonts['small'])
-    love.graphics.printf('Press enter to start', 0, VIRTUAL_HEIGHT / 4 * 3, VIRTUAL_WIDTH, 'center')
+
+    self.playButton:render(VIRTUAL_WIDTH / 2 - TILE_SIZE * 2, VIRTUAL_HEIGHT / 4 * 3)
+    self.editButton:render(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 4 * 3)
+
 end
 
 function TitleState:drawBackground()
