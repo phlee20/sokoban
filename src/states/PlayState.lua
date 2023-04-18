@@ -34,7 +34,11 @@ function PlayState:update(dt)
         -- go to next level
         if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
             gStateStack:pop()
-            gStateStack:push(PlayState(self.currentLevel + 1))
+            if self.currentLevel == #LEVEL_DEF then
+                gStateStack:push(TitleState())
+            else
+                gStateStack:push(PlayState(self.currentLevel + 1))
+            end
         end
     end
 end

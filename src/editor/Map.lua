@@ -171,7 +171,6 @@ function Map:saveMap()
     end
 
     local serialized = lume.serialize(self.mapDef)
-    love.filesystem.write("sokoban_map.csv", serialized)
     print(serialized)
 end
 
