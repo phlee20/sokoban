@@ -172,6 +172,11 @@ function Map:saveMap()
 
     local serialized = lume.serialize(self.mapDef)
     print(serialized)
+
+    -- local file = io.open('src/level_def.lua', 'a')
+    -- file:write(serialized)
+    -- file:close()
+
 end
 
 function Map:boxOnDot()
