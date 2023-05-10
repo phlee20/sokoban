@@ -6,7 +6,7 @@ end
 
 function LevelSelectState:update(dt)
     if love.keyboard.wasPressed('right') then
-        self.level = math.min(self.level + 1, #LEVEL_DEF)
+        self.level = math.min(self.level + 1, #gLevels)
     elseif love.keyboard.wasPressed('left') then
         self.level = math.max(self.level - 1, 1)
     end

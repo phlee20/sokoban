@@ -170,6 +170,26 @@ function Map:saveMap()
         self.mapDef[self.player.gridY][self.player.gridX] = 5
     end
 
+    -- convert to string
+    file = io.open('src/levels_def.txt', 'a')
+    if not file then return nil end
+
+    -- write level number
+    file:write('\n')
+    file:write(tostring(#gLevels + 1))
+
+    -- write level lines
+    for y = 1, #self.mapDef do
+        file:write('\n')
+        local row = ""
+        for x = 1, #self.mapDef[y] do
+            row = row .. tostring(self.mapDef[y][x])
+        end
+        file:write(row)
+    end
+
+    file:close()
+
     local serialized = lume.serialize(self.mapDef)
     print(serialized)
 

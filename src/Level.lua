@@ -2,7 +2,7 @@ Level = Class {}
 
 function Level:init(lvl)
     -- Get level layout and max height and width
-    self.levelLayout = LEVEL_DEF[lvl]
+    self.levelLayout = gLevels[lvl]
     self.levelHeight = #self.levelLayout
     self.levelWidth = #self.levelLayout[1]
 
@@ -67,7 +67,7 @@ function Level:generateMap()
                 table.insert(self.dots, Dot(x, y, tileID))
             end
 
-                -- locate the player starting position
+            -- locate the player starting position
             if self.levelLayout[y][x] == 5 then
                 self.xPlayerStart = x
                 self.yPlayerStart = y

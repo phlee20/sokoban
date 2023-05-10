@@ -14,6 +14,8 @@ function love.load()
         canvas = true
     })
 
+    gLevels = loadLevels()
+
     gStateStack = StateStack()
     gStateStack:push(TitleState())
 
@@ -66,4 +68,43 @@ function love.draw()
     gStateStack:render()
 
     push:finish()
+end
+
+function loadLevels()
+    local levels = {}
+    local levelCounter = 0
+
+    file = io.open('src/levels_def.txt', 'r')
+    if not file then return nil end
+
+    repeat
+        local line = file:read('l')
+
+        if line ~= nil then
+            local length = string.len(line)
+            if length == 1 then
+                table.insert(levels, {})
+                row = 0
+                levelCounter = levelCounter + 1
+            else
+                table.insert(levels[levelCounter], {})
+                row = row + 1
+                for i = 1, length do
+                    table.insert(levels[levelCounter][row], tonumber(string.sub(line, i, i)))
+                end
+            end
+        end
+    until line == nil
+
+    file:close()
+
+    -- for i = 1, #levels do
+    --     for j = 1, #levels[i] do
+    --         for k = 1, #levels[i][j] do
+    --             print(levels[i][j][k])
+    --         end
+    --     end
+    -- end
+
+    return levels
 end
