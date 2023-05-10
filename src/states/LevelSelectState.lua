@@ -15,6 +15,11 @@ function LevelSelectState:update(dt)
         gStateStack:pop()
         gStateStack:push(PlayState(self.level))
     end
+
+    if love.keyboard.wasPressed('escape') then
+        gStateStack:pop()
+        gStateStack:push(TitleState())
+    end
 end
 
 function LevelSelectState:render()

@@ -5,13 +5,14 @@ function PlayState:init(currentLevel)
     self.level = Level(self.currentLevel)
     self.player = Player(self.level)
 
-    self.timer = 0
+    self.moves = 0
     self.solved = false
 
     -- initial check for boxes on dots
     self.level:isSolved()
 
     Event.on('checkSolve', function()
+        self.moves = self.moves + 1
         if self.level:isSolved() then
             self.solved = true
         end
@@ -23,8 +24,6 @@ function PlayState:update(dt)
         self.level:update(dt)
         self.player:update(dt)
 
-        self.timer = self.timer + dt
-        
         -- restart the level
         if love.keyboard.wasPressed('r') then
             gStateStack:pop()
@@ -41,6 +40,11 @@ function PlayState:update(dt)
             end
         end
     end
+    
+    if love.keyboard.wasPressed('escape') then
+        gStateStack:pop()
+        gStateStack:push(LevelSelectState())
+    end
 end
 
 function PlayState:render()
@@ -50,10 +54,11 @@ function PlayState:render()
     love.graphics.setFont(gFonts['small'])
     love.graphics.print('Level ' .. self.currentLevel, 20, 20)
 
-    -- add timer display
-    love.graphics.print('Time: ' .. math.floor(self.timer), VIRTUAL_WIDTH - 160, 20)
+    love.graphics.print('Moves: ' .. tostring(self.moves), VIRTUAL_WIDTH - 160, 20)
 
-    -- add GUI
+    love.graphics.print('(r)eset', 20, VIRTUAL_HEIGHT - 40)
+    love.graphics.print("Quit - 'esc'", VIRTUAL_WIDTH - 200, VIRTUAL_HEIGHT - 40)
+
 
     if self.solved then
         love.graphics.setColor(1, 1, 1, 150 / 255)

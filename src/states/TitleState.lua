@@ -26,6 +26,10 @@ function TitleState:update(dt)
             gStateStack:push(GridSelectState())
         end
     end
+
+    if love.keyboard.wasPressed('escape') then
+        love.event.quit()
+    end
 end
 
 function TitleState:render()
@@ -39,6 +43,9 @@ function TitleState:render()
         VIRTUAL_WIDTH / 2 - TILE_SIZE, TILE_SIZE * 6 + 16, 0, 2, 2)
 
     love.graphics.setFont(gFonts['medium'])
+    love.graphics.setColor(0, 0, 0, 1)
+    love.graphics.printf('S O K O B A N', 2, VIRTUAL_HEIGHT / 3 + 2, VIRTUAL_WIDTH, 'center')
+    love.graphics.setColor(1, 1, 1, 1)
     love.graphics.printf('S O K O B A N', 0, VIRTUAL_HEIGHT / 3, VIRTUAL_WIDTH, 'center')
 
     love.graphics.setFont(gFonts['small'])

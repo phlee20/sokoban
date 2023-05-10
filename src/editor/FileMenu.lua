@@ -17,19 +17,24 @@ end
 function FileMenu:generateButtons()
     local buttons = {}
 
-    local types = { 'Reset', 'Save' }
+    local types = { 'Clear', 'Save', 'Quit' }
     
     for i = 1, #types do
         buttons[types[i]] = MenuButton(0, (i - 1) * TILE_SIZE * 2, types[i])
         -- table.insert(buttons, MenuButton(0, (i - 1) * TILE_SIZE * 2, types[i]))
     end
     
-    buttons['Reset'].onClick = function()
+    buttons['Clear'].onClick = function()
         Event.dispatch('reset')
     end
 
     buttons['Save'].onClick = function()
         Event.dispatch('save')
+    end
+
+    buttons['Quit'].onClick = function()
+        gStateStack:pop()
+        gStateStack:push(TitleState())
     end
 
     return buttons

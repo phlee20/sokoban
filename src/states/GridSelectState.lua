@@ -30,6 +30,11 @@ function GridSelectState:update(dt)
         gStateStack:pop()
         gStateStack:push(EditorState(self.gridWidth, self.gridHeight))
     end
+
+    if love.keyboard.wasPressed('escape') then
+        gStateStack:pop()
+        gStateStack:push(TitleState())
+    end
 end
 
 function GridSelectState:render()
