@@ -1,6 +1,7 @@
 EditorState = Class { __includes = BaseState }
 
-function EditorState:init(width, height)
+function EditorState:init(width, height, level)
+    self.level = level
     -- grid
     self.gridWidth = width
     self.gridHeight = height
@@ -14,7 +15,7 @@ function EditorState:init(width, height)
     self.tileMenu = TileMenu(self.tileMenuPosX, self.tileMenuPosY)
 
     -- tile map
-    self.map = Map(self.gridWidth, self.gridHeight)
+    self.map = Map(self.gridWidth, self.gridHeight, self.level)
 
     -- file menu
     self.fileMenuPosX = VIRTUAL_WIDTH - TILE_SIZE * 3

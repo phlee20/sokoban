@@ -6,24 +6,30 @@ function TitleState:init()
     self.background = self:drawBackground()
     
     -- Menu buttons
-    self.playButton = MenuButton(0, 0, 'Play')
-    self.editButton = MenuButton(0, 0, 'Edit')
-
-    self.playButton:toggle()
+    self.currentMenuItem = 1
 end
 
 function TitleState:update(dt)
-    if love.keyboard.wasPressed('right') or love.keyboard.wasPressed('left') then
-        self.playButton:toggle()
-        self.editButton:toggle()
+    if love.keyboard.wasPressed('down') then
+        self.currentMenuItem = self.currentMenuItem + 1
+        if self.currentMenuItem > 3 then
+            self.currentMenuItem = 1
+        end
+    elseif love.keyboard.wasPressed('up') then
+        self.currentMenuItem = self.currentMenuItem - 1
+        if self.currentMenuItem < 1 then
+            self.currentMenuItem = 3
+        end
     end
 
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         gStateStack:pop()
-        if self.playButton.highlighted then
+        if self.currentMenuItem == 1 then
             gStateStack:push(LevelSelectState())
-        else
+        elseif self.currentMenuItem == 2 then
             gStateStack:push(GridSelectState())
+        else
+            gStateStack:push(LevelLoadState())
         end
     end
 
@@ -50,9 +56,7 @@ function TitleState:render()
 
     love.graphics.setFont(gFonts['small'])
 
-    self.playButton:render(VIRTUAL_WIDTH / 2 - TILE_SIZE * 2, VIRTUAL_HEIGHT / 4 * 3)
-    self.editButton:render(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 4 * 3)
-
+    self:drawOptions()
 end
 
 function TitleState:drawBackground()
@@ -96,4 +100,47 @@ function TitleState:drawBackground()
     end
 
     return tiles
+end
+
+function TitleState:drawOptions()
+    love.graphics.setFont(gFonts['small'])
+
+    -- draw play game option
+    love.graphics.setColor(34 / 255, 32 / 255, 52 / 255, 1)
+    love.graphics.printf('Play Game', 3, VIRTUAL_HEIGHT / 4 * 3 + 3, VIRTUAL_WIDTH, 'center')
+    love.graphics.setColor(1, 1, 1, 1)
+
+    if self.currentMenuItem == 1 then
+        love.graphics.setColor(1, 1, 1, 1)
+    else
+        love.graphics.setColor(200 / 255, 200 / 255, 200 / 255, 1)
+    end
+
+    love.graphics.printf('Play Game', 0, VIRTUAL_HEIGHT / 4 * 3, VIRTUAL_WIDTH, 'center')
+
+    -- draw make new level option
+    love.graphics.setColor(34 / 255, 32 / 255, 52 / 255, 1)
+    love.graphics.printf('Create New Level', 3, VIRTUAL_HEIGHT / 4 * 3 + 50 + 3, VIRTUAL_WIDTH, 'center')
+    love.graphics.setColor(1, 1, 1, 1)
+
+    if self.currentMenuItem == 2 then
+        love.graphics.setColor(1, 1, 1, 1)
+    else
+        love.graphics.setColor(200 / 255, 200 / 255, 200 / 255, 1)
+    end
+
+    love.graphics.printf('Create New Level', 0, VIRTUAL_HEIGHT / 4 * 3 + 50, VIRTUAL_WIDTH, 'center')
+
+    -- draw edit level option
+    love.graphics.setColor(34 / 255, 32 / 255, 52 / 255, 1)
+    love.graphics.printf('Edit Level', 3, VIRTUAL_HEIGHT / 4 * 3 + 100 + 3, VIRTUAL_WIDTH, 'center')
+    love.graphics.setColor(1, 1, 1, 1)
+
+    if self.currentMenuItem == 3 then
+        love.graphics.setColor(1, 1, 1, 1)
+    else
+        love.graphics.setColor(200 / 255, 200 / 255, 200 / 255, 1)
+    end
+
+    love.graphics.printf('Edit Level', 0, VIRTUAL_HEIGHT / 4 * 3 + 100, VIRTUAL_WIDTH, 'center')
 end

@@ -1,6 +1,8 @@
 Map = Class { __includes = Grid }
 
-function Map:init(x, y)
+function Map:init(x, y, lvl)
+    self.level = lvl
+    self.mapLoaded = false
     Grid.init(self, x, y)
 
     self:resetMap()
@@ -50,12 +52,19 @@ function Map:resetMap()
 
     local tileID = BLANK[1]
 
-    for y = 1, self.gridY do
-        table.insert(self.tiles, {})
-        table.insert(self.mapDef, {})
-        for x = 1, self.gridX do
-            table.insert(self.tiles[y], Tile(x, y, tileID))
-            table.insert(self.mapDef[y], 2)
+    -- load existing map first time only
+    if self.level <= #gLevels and not self.mapLoaded then
+        self:loadMap()
+
+    -- draw empty map
+    else
+        for y = 1, self.gridY do
+            table.insert(self.tiles, {})
+            table.insert(self.mapDef, {})
+            for x = 1, self.gridX do
+                table.insert(self.tiles[y], Tile(x, y, tileID))
+                table.insert(self.mapDef[y], 2)
+            end
         end
     end
 end
@@ -211,4 +220,23 @@ function Map:boxOnDot()
             end
         end
     end
+end
+
+function Map:loadMap()
+    local convertID = {
+        [BLANK[1]] = 2,
+        [GROUND[1]] = 0,
+        [WALLS[1]] = 1
+    }
+    
+    for y = 1, self.gridY do
+        table.insert(self.tiles, {})
+        table.insert(self.mapDef, {})
+        for x = 1, self.gridX do
+            tileID = gLevels[self.level][y][x]
+            table.insert(self.tiles[y], Tile(x, y, tileID))
+            table.insert(self.mapDef[y], tileID)
+        end
+    end
+    self.mapLoaded = true
 end

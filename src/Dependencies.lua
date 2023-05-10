@@ -32,6 +32,7 @@ require 'src/states/PlayState'
 require 'src/states/LevelSelectState'
 require 'src/states/EditorState'
 require 'src/states/GridSelectState'
+require 'src/states/LevelLoadState'
 
 
 gTextures = {

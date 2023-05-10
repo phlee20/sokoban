@@ -28,7 +28,7 @@ function GridSelectState:update(dt)
 
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         gStateStack:pop()
-        gStateStack:push(EditorState(self.gridWidth, self.gridHeight))
+        gStateStack:push(EditorState(self.gridWidth, self.gridHeight, #gLevels + 1))
     end
 
     if love.keyboard.wasPressed('escape') then
