@@ -17,10 +17,16 @@ function EditorState:init(width, height, level)
     -- tile map
     self.map = Map(self.gridWidth, self.gridHeight, self.level)
 
+    if self.level > #gLevels then
+        self.mode = 'new'
+    else
+        self.mode = 'edit'
+    end
+
     -- file menu
     self.fileMenuPosX = VIRTUAL_WIDTH - TILE_SIZE * 3
     self.fileMenuPosY = TILE_SIZE
-    self.fileMenu = FileMenu(self.fileMenuPosX, self.fileMenuPosY)
+    self.fileMenu = FileMenu(self.fileMenuPosX, self.fileMenuPosY, self.mode)
 
     -- mouse states to keep track
     self.tileSelected = false

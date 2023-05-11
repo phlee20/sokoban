@@ -13,6 +13,12 @@ function Map:init(x, y, lvl)
 
     Event.on('save', function()
         self:saveMap()
+        loadLevels()
+    end)
+
+    Event.on('delete', function()
+        self:deleteMap()
+        loadLevels()
     end)
 end
 
@@ -178,34 +184,47 @@ function Map:saveMap()
     if self.playerExists then
         self.mapDef[self.player.gridY][self.player.gridX] = 5
     end
+    
+    table.insert(gLevels, self.level, {})
+    for i = 1, #self.mapDef do
+        table.insert(gLevels[self.level], self.mapDef[i])
+    end
+    if self.level <= #gLevels then
+        table.remove(gLevels, self.level + 1)
+    end
 
+    self:writeFile()
+end
+
+function Map:deleteMap()
+    table.remove(gLevels, self.level)
+    self:writeFile()
+end
+
+function Map:writeFile()
     -- convert to string
-    file = io.open('src/levels_def.txt', 'a')
+    file = io.open('src/levels_def.txt', 'w')
     if not file then return nil end
 
-    -- write level number
-    file:write('\n')
-    file:write(tostring(#gLevels + 1))
-
-    -- write level lines
-    for y = 1, #self.mapDef do
-        file:write('\n')
-        local row = ""
-        for x = 1, #self.mapDef[y] do
-            row = row .. tostring(self.mapDef[y][x])
+    for i = 1, #gLevels do
+        -- write level number
+        file:write(tostring(i))
+        
+        -- write level lines
+        for y = 1, #gLevels[i] do
+            file:write('\n')
+            local row = ""
+            for x = 1, #gLevels[i][y] do
+                row = row .. tostring(gLevels[i][y][x])
+            end
+            file:write(row)
         end
-        file:write(row)
+        if i < #gLevels then
+            file:write('\n')
+        end
     end
 
     file:close()
-
-    local serialized = lume.serialize(self.mapDef)
-    print(serialized)
-
-    -- local file = io.open('src/level_def.lua', 'a')
-    -- file:write(serialized)
-    -- file:close()
-
 end
 
 function Map:boxOnDot()
@@ -233,10 +252,38 @@ function Map:loadMap()
         table.insert(self.tiles, {})
         table.insert(self.mapDef, {})
         for x = 1, self.gridX do
-            tileID = gLevels[self.level][y][x]
+            local square = gLevels[self.level][y][x]
+            if square == 1 then
+                tileID = WALLS[1]
+            elseif square == 2 then
+                tileID = BLANK[1]
+            else
+                tileID = GROUND[1]
+            end
             table.insert(self.tiles[y], Tile(x, y, tileID))
+
+            -- add boxes and dots
+            if square == 3 or square == 6 then
+                tileID = BOXES[1]
+                table.insert(self.boxes, Box(x, y, tileID))
+            end
+
+            if square == 4 or square == 6 then
+                tileID = DOTS[1]
+                table.insert(self.dots, Dot(x, y, tileID))
+            end
+
+            -- locate the player starting position
+            if square == 5 then
+                self.player:move(x, y)
+                self.playerExists = true
+            end
             table.insert(self.mapDef[y], tileID)
         end
     end
     self.mapLoaded = true
+end
+
+function Map:confirmMessage(text, callback)
+    love.graphics.printf()
 end
