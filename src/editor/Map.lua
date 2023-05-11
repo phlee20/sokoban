@@ -20,6 +20,8 @@ function Map:init(x, y, lvl)
         self:deleteMap()
         loadLevels()
     end)
+
+    self.message = false
 end
 
 function Map:update(dt)
@@ -43,6 +45,10 @@ function Map:render(xOffset, yOffset)
 
     if self.playerExists then
         self.player:render(xOffset, yOffset)
+    end
+
+    if self.message then
+        self:confirmMessage()
     end
 end
 
@@ -194,11 +200,22 @@ function Map:saveMap()
     end
 
     self:writeFile()
+
+    self:confirmMessage()
+    self.message = true
+    Timer.after(1.5, function()
+        self.message = false
+    end)
 end
 
 function Map:deleteMap()
     table.remove(gLevels, self.level)
     self:writeFile()
+    self:confirmMessage()
+    self.message = true
+    Timer.after(1.5, function()
+        self.message = false
+    end)
 end
 
 function Map:writeFile()
@@ -284,6 +301,11 @@ function Map:loadMap()
     self.mapLoaded = true
 end
 
-function Map:confirmMessage(text, callback)
-    love.graphics.printf()
+function Map:confirmMessage()
+    love.graphics.setColor(1, 1, 1, 150 / 255)
+    love.graphics.rectangle('fill', 0, VIRTUAL_HEIGHT / 2 - 60, VIRTUAL_WIDTH, 160)
+
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.setFont(gFonts['medium'])
+    love.graphics.printf('Done', 0, VIRTUAL_HEIGHT / 2 - 40, VIRTUAL_WIDTH, 'center')
 end

@@ -95,6 +95,6 @@ function Level:isSolved()
             end
         end
     end
-
+    
     return numDots == #self.dots
 end
