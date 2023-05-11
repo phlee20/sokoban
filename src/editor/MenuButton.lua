@@ -14,6 +14,7 @@ end
 
 function MenuButton:render(x, y)
     -- love.graphics.rectangle("line", self.x + x, self.y + y, self.width, self.height)
+    love.graphics.setFont(gFonts['small'])
 
     if self.highlighted then
         love.graphics.setColor(1, 1, 1, 1)
